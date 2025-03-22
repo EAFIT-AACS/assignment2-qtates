@@ -3,7 +3,7 @@ import Automaton
 import PrintTree
 
 correctStrings=CreateStrings.createCorrectStrings()
-worngStrings=CreateStrings.createWorngStrings()
+worngStrings=CreateStrings.createWrongStrings()
 print(correctStrings,worngStrings)
 
 results=Automaton.validationString(correctStrings,worngStrings)

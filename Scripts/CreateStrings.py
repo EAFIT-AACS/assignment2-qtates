@@ -21,7 +21,7 @@ def createCorrectStrings():
         strings.append(cadena)
     return strings
 
-def createWorngStrings():
+def createWrongStrings():
     strings = []
     for i in range (r.randint(2,5)):
         cadena = ""
