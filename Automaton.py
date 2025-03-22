@@ -11,7 +11,7 @@ def validationString(correctStrings,worngStrings):
     for i in (vectorStrings):
         for j in range (len(vectorString)):
             letra = vectorStrings[j]
-            stack2= stack
+            stack2= stack.pop(0)
 
            
 
