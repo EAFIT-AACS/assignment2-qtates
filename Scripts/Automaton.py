@@ -1,24 +1,20 @@
-def validationString(correctStrings,wrongStrings,i):
+def validationString(word):
     
-    # VectorString keeps the strings to be processed and adds the strings that belong and don't belong to the grammar's language definition.
-    vectorStrings=[]
-    vectorStrings.append(correctStrings)
-    vectorStrings.append(wrongStrings)
-
     # Definition of automaton: Stack with its initial symbol, started state q, transitions).
     stack = ["b"]
-    q=vectorStrings[0]
+    q=word
     #Definition of transitions/rules using a dictionary.
     functiontransition = {("a","b"):["ab",1],("a","a"):["",2],("b",""):["b",3],("b","b"):["",4],("a",""):["abx",5],("a","x"):["ab",6],("b","x"):["bx",7]}
 
     #Definition of the variable for having the sequence/steps of the stack and rule transition, necessary for the third algorithm.
     stackSequence=["b"]
     ruleTransitionsSequence=[]
+    state=0
 
     #Analizy every string in vectorStrings.
     stack = ["b"] #In every iteration get the initial symbol in the stack.
-    for j in range(len(vectorStrings[i])):
-        letter=vectorStrings[i][j] #Processed letter for letter.
+    for j in range(len(word)):
+        letter=word[j] #Processed letter for letter.
             
         if(len(stack) == 0):
             highStack=""
@@ -41,10 +37,12 @@ def validationString(correctStrings,wrongStrings,i):
             stack.insert(k,transition[k])
         print(stack)
         stackSequence.append(stack[:])
-        #If stack is empty, then the string was accepted.
-        if len(stack)==0:
-            print("The string belong to the language")
-        else:
-            print("The string doesn't belong to the language")
+    #If stack is empty, then the string was accepted.
+    if len(stack)==0:
+        print("The string belong to the language")
+        state=0
+    else:
+        print("The string doesn't belong to the language")
+        state=1
 
-    return stackSequence, ruleTransitionsSequence
+    return stackSequence, ruleTransitionsSequence, state

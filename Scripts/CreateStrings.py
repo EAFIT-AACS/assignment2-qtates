@@ -2,7 +2,7 @@ import random as r
 
 def createCorrectStrings():
     strings = []
-    for i in range (r.randint(2,5)):
+    for i in range (r.randint(2,3)):
         cadena = ""
         stringAmounts = r.randint(1,4)
         if stringAmounts%2 == 0:
@@ -23,7 +23,7 @@ def createCorrectStrings():
 
 def createWrongStrings():
     strings = []
-    for i in range (r.randint(2,5)):
+    for i in range (r.randint(2,3)):
         cadena = ""
         stringAmounts = r.randint(1,4)
         if stringAmounts%2 != 0:
