@@ -1,3 +1,3 @@
 def printTree(results):
     
-    return "Tree"
+    return results

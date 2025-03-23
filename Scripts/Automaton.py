@@ -1,4 +1,4 @@
-def validationString(correctStrings,wrongStrings):
+def validationString(correctStrings,wrongStrings,i):
     
     # VectorString keeps the strings to be processed and adds the strings that belong and don't belong to the grammar's language definition.
     vectorStrings=[]
@@ -16,32 +16,31 @@ def validationString(correctStrings,wrongStrings):
     ruleTransitionsSequence=[]
 
     #Analizy every string in vectorStrings.
-    for i in range(len(vectorStrings)):
-        stack = ["b"] #In every iteration get the initial symbol in the stack.
-        for j in range(len(vectorStrings[i])):
-            letter=vectorStrings[i][j] #Processed letter for letter.
+    stack = ["b"] #In every iteration get the initial symbol in the stack.
+    for j in range(len(vectorStrings[i])):
+        letter=vectorStrings[i][j] #Processed letter for letter.
             
-            if(len(stack) == 0):
-                highStack=""
-                stack.append(" ") #If the stack is empty, so add a (" ") to represent it and avoid issues.
-            else:
-                highStack= stack[0] #Otherwise take the first character in the stack.
+        if(len(stack) == 0):
+            highStack=""
+            stack.append(" ") #If the stack is empty, so add a (" ") to represent it and avoid issues.
+        else:
+            highStack= stack[0] #Otherwise take the first character in the stack.
             
             #Search the corresponding transition/rule for the letter and hihgStack, and add the number's rule.
-            if (letter,highStack) in functiontransition:
-                transition=functiontransition[letter,highStack][0]
-                ruleTransitionsSequence.append(functiontransition[letter,highStack][1])
-            else:
-                #Not finding a transition with these values, so not exist and the string doesn't belong to the language.
-                break
-            print(letter,",",highStack,":",transition)
+        if (letter,highStack) in functiontransition:
+            transition=functiontransition[letter,highStack][0]
+            ruleTransitionsSequence.append(functiontransition[letter,highStack][1])
+        else:
+            #Not finding a transition with these values, so not exist and the string doesn't belong to the language.
+            break
+        print(letter,",",highStack,":",transition)
             
-            #Delete the first character in the stack, and add the transition character to the character in the stack. When this process is finished add it stackSequence.
-            stack.pop(0) 
-            for k in range(len(transition)):
-                stack.insert(k,transition[k])
-            print(stack)
-            stackSequence.append(stack[:])
+        #Delete the first character in the stack, and add the transition character to the character in the stack. When this process is finished add it stackSequence.
+        stack.pop(0) 
+        for k in range(len(transition)):
+            stack.insert(k,transition[k])
+        print(stack)
+        stackSequence.append(stack[:])
         #If stack is empty, then the string was accepted.
         if len(stack)==0:
             print("The string belong to the language")
@@ -49,5 +48,3 @@ def validationString(correctStrings,wrongStrings):
             print("The string doesn't belong to the language")
 
     return stackSequence, ruleTransitionsSequence
-
-validationString("aaaabbbaaaabbbaabaabaaaabbb","aaab")
