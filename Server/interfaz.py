@@ -9,8 +9,8 @@ st.title("Generador de Cadenas - Con API")
 API_URL = "http://localhost:8000"
 
 # Inicializar el estado si no existe
-if "RigtStrings" not in st.session_state:
-    st.session_state.RigtStrings = []
+if "RightStrings" not in st.session_state:
+    st.session_state.RightStrings = []
 if "WrongsStrings" not in st.session_state:
     st.session_state.WrongsStrings = []
 if "combinedList" not in st.session_state:
@@ -41,7 +41,57 @@ def sendValidateString():
     else:
         st.error("⚠️ Primero debes generar las cadenas.")
 
+def generateStrings():
+    RightStringsRes = requests.get(f"{API_URL}/generate-correct")
+    WrongsStringsRes = requests.get(f"{API_URL}/generate-wrong")
+
+    # Validar respuestas
+    if RightStringsRes.status_code == 200:
+        st.session_state.RightStrings = RightStringsRes.json().get("strings", [])
+        st.success("✅ Cadenas Correctas Generadas:")
+        for i in range(len(st.session_state.RightStrings)):
+            st.write(i,": ",st.session_state.RightStrings[i])# Mostrar las cadenas generadas
+    else:
+        st.error("⚠️ Error al conectar con la API (cadenas correctas).")
+
+    if WrongsStringsRes.status_code == 200:
+        st.session_state.WrongsStrings = WrongsStringsRes.json().get("strings", [])
+        st.error("❌ Cadenas Incorrectas Generadas:")
+        for i in range(len(st.session_state.WrongsStrings)):
+            st.write(i,": ",st.session_state.WrongsStrings[i])# Mostrar las cadenas generadas
+    else:
+        st.error("⚠️ Error al conectar con la API (cadenas incorrectas).")
+
+    # Fusionar y mezclar las listas
+    combinedList = st.session_state.RightStrings + st.session_state.WrongsStrings
+    random.shuffle(combinedList)  # Mezclar en orden aleatorio
+    st.session_state.combinedList = combinedList
+    st.info("Lista combinada y mezclada:")
+    for i in range (len(st.session_state.combinedList)):
+        st.write(i,": ",st.session_state.combinedList[i])
+    st.session_state.iterator = 0
+    st.session_state.buttonNext = 0
+    st.rerun()
+
+
 st.write("Haz clic en un botón para solicitar cadenas a la API:")
+
+st.write("Lista de cadenas actual:")
+
+if st.session_state.combinedList:
+    for i in range (len(st.session_state.combinedList)):
+        if i == st.session_state.iterator:
+            if st.session_state.combinedList[i] in st.session_state.RightStrings:
+                st.write(i,": ",st.session_state.combinedList[i], "(Válida)","✅")
+            else:
+                st.write(i,": ",st.session_state.combinedList[i], "(Inválida)","✅")
+        else:
+            if st.session_state.combinedList[i] in st.session_state.RightStrings:
+                st.write(i,": ",st.session_state.combinedList[i], "(Válida)")
+            else:
+                st.write(i,": ",st.session_state.combinedList[i], "(Inválida)")
+else:
+    st.write("No hay cadenas generadas")
 
     # Switch para alternar entre "Generar" e "Ingresar"
 modo = st.radio("Selecciona el modo:", ["Generar", "Ingresar"])
@@ -52,30 +102,8 @@ if modo == "Generar":
     # Botón para pedir cadenas correctas
     if st.button("Generar Cadenas"):
         # Hacemos las peticiones a la API
-        RigtStringsRes = requests.get(f"{API_URL}/generate-correct")
-        WrongsStringsRes = requests.get(f"{API_URL}/generate-wrong")
+        generateStrings()
 
-        # Validar respuestas
-        if RigtStringsRes.status_code == 200:
-            st.session_state.RigtStrings = RigtStringsRes.json().get("strings", [])
-            st.success("✅ Cadenas Correctas Generadas:")
-            st.write(st.session_state.RigtStrings)
-        else:
-            st.error("⚠️ Error al conectar con la API (cadenas correctas).")
-
-        if WrongsStringsRes.status_code == 200:
-            st.session_state.WrongsStrings = WrongsStringsRes.json().get("strings", [])
-            st.success("✅ Cadenas Incorrectas Generadas:")
-            st.write(st.session_state.WrongsStrings)
-        else:
-            st.error("⚠️ Error al conectar con la API (cadenas incorrectas).")
-
-        # Fusionar y mezclar las listas
-        combinedList = st.session_state.RigtStrings + st.session_state.WrongsStrings
-        random.shuffle(combinedList)  # Mezclar en orden aleatorio
-        st.session_state.combinedList = combinedList
-        st.write("Lista combinada y mezclada:")
-        st.write(st.session_state.combinedList)
     # Botón para validar cadenas (envía un POST)
     if st.button("Validar Cadenas"):
         sendValidateString()
