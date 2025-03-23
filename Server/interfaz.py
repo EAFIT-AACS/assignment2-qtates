@@ -10,11 +10,11 @@ API_URL = "http://localhost:8000"
 st.write("Haz clic en un botón para solicitar cadenas a la API:")
 
 # Botón para pedir cadenas correctas
-if st.button("Generar Cadenas Correctas"):
-    respuesta = requests.get(f"{API_URL}/generate-correct")
-    if respuesta.status_code == 200:
+if st.button("Generar Cadenas"):
+    respuestaCorrectas = requests.get(f"{API_URL}/generate-correct")
+    if respuestaCorrectas.status_code == 200:
         st.success("✅ Cadenas Correctas Generadas:")
-        st.write(respuesta.json()["strings"])
+        st.write(respuestaCorrectas.json()["strings"])
     else:
         st.error("⚠️ Error al conectar con la API.")
 
