@@ -47,6 +47,8 @@ streamlit: streamlit run Server/interfaceCFG.py
 
 After completing the previous steps, the following page should open in your browser.
 
+![6a7919a9-582d-4fcb-b771-6e515a94531a](https://github.com/user-attachments/assets/8e9ce167-5b31-43e8-ae83-e63a2aeb2f86)
+
 - 1. You will find two options for using the API: generating strings using the first algorithm or letting your imagination run wild and entering them manually. To proceed, choose an option.
 
 (If your choice is to generate strings, follow steps 2 to 5. If you choose to enter them manually, follow steps 5 to 6.)
@@ -58,6 +60,8 @@ After completing the previous steps, the following page should open in your brow
 - 4. From this point, you can click "Next" or "Back" to view the validation process for all strings. You can use the emoji: ✅ indicator to see which string is currently being processed.
 
 - 5. By selecting "Enter String," you will see the following interface.
+
+![b164153d-4cd9-4391-88d7-e4e42fa99e6d](https://github.com/user-attachments/assets/4684525f-4ee8-49b5-a3eb-38babbe14169)
 
 
 In the text input, you can enter the string you want to verify. Enter it without spaces: " ".
