@@ -43,4 +43,4 @@ def validationString(word):
         print("The string doesn't belong to the language")
         state=1
 
-    return stackSequence, ruleTransitionsSequence, state
+    return stackSequence, ruleTransitionsSequence, state, word

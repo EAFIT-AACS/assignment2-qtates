@@ -1,6 +1,7 @@
 import random
 import requests
 import streamlit as st
+import pandas as pd
 
 st.title("🔢 Strings Generator and Validator")
 
@@ -90,7 +91,20 @@ else:
 
 st.info("Results of the validation:")
 if st.session_state.validation:
-    st.write(st.session_state.validation.json().get("message", "No menssage."))
+    data = st.session_state.validation.json()  # Get the data from the response
+    # Create a dataframe with the data
+    df = pd.DataFrame({
+        "Tree": data["tree"],
+        "Stack": data["stack"],
+        "Rules": data["rules"]
+    })
+
+    # Show the table
+    st.table(df)
+    if data["result"] == "The string belong to the language":
+        st.success(data["result"])
+    else:
+        st.error(data["result"])
 else:
     st.write("No datas to show.")
 

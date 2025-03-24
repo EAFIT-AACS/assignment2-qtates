@@ -11,11 +11,12 @@ In this assignment, you will see the step-by-step process of creating a context-
 - [Explanation of the context free grammar](#explanation-of-the-context-free-grammar)
 - [Explanation of the algorithm](#explanation-of-the-algorithm)
     - [First algorithm: Creating the accepted and rejected Strings](#first-algorithm:-creating-the-accepted-and-rejected-Strings)
-    - [Algorithm of the automaton](#algotihm-of-the-automaton)
-    - [Automata configuration tree algorithm](#algotihm-of-creation-strings)
+    - [Algorithm of the automaton](#algorithm-of-the-automaton)
+    - [Automata configuration tree algorithm](#algorithm-of-creation-strings)
     - [API](#api)
 
 ## Team
+- Ginna Alejandra Valencia Macuace
 - Laura Andrea Castrillón Fajardo
 - Samuel Martínez Arteaga
 
@@ -34,13 +35,17 @@ pip install fastapi uvicorn
 ```
 pip install streamlit
 ```
-- 3. It is necessary to turn on the API locally. To do this open a terminal pointing to the folder created after cloning the repository. To do this, type the following command in the terminal:
+- 5. Install pandas. To do this, type the following command in the terminal:
 ```
-FastAPI: uvicorn Server.app:app --reload
+pip install pandas
 ```
-- 4. Now we run streamlit also from the same address. To do this, type the following command in the terminal:
+- 4. It is necessary to turn on the API locally. To do this open a terminal pointing to the folder created after cloning the repository. To do this, type the following command in the terminal:
 ```
-streamlit: streamlit run Server/interfaceCFG.py
+uvicorn Server.app:app --reload
+```
+- 5. Now we run streamlit also from the same address. To do this, type the following command in the terminal:
+```
+streamlit run Server/interfaceCFG.py
 ```
 
 ## User's Manual
@@ -148,7 +153,7 @@ This is one of the most important algorithms in this project, the automaton.
     state=0
 ```
 
-We define the automaton's parameters, like the initial state, the inital simbol of the stack, all the transition rules (as a dictionary in python to facilitate the aplication of the automaton in code) and some variables to do the tracing of the stack, the transitions and the states that the automaton reaches through the validation of a string
+We define the automaton's parameters, like the initial state, the initial simbol of the stack, all the transition rules (as a dictionary in python to facilitate the application of the automaton in code) and some variables to do the tracing of the stack, the transitions and the states that the automaton reaches through the validation of a string
 
 ```
  for j in range(len(word)):
@@ -165,7 +170,7 @@ We star iterating the string letter for letter
             highStack= stack[0] #Otherwise take the first character in the stack.
 ```
 
-Python doesn't recognize the nule string, so if the stack is empty we append a blank space " "; this to avoid issues, like index out of range and so on. Otherwise, we take the first character of the stack
+Python doesn't recognize the null string, so if the stack is empty we append a blank space " "; this to avoid issues, like index out of range and so on. Otherwise, we take the first character of the stack
 
 ```
         #Search the corresponding transition/rule for the letter and hihgStack, and add the number's rule.
@@ -199,17 +204,46 @@ In this fragment of code we unstack the first element of the stack, and append t
         print("The string doesn't belong to the language")
         state=1
 
-    return stackSequence, ruleTransitionsSequence, state
+    return stackSequence, ruleTransitionsSequence, state, word
 ```
-Finally, we confirm if the stack is empty (it means that the automaton accepted the String) or if it is not (it means that the automaton rejected the String). So, if the state = 0, the automaton accepted the String, if the state = 1, the automaton rejected the String. All this algorithm retunrs the stackSequence, the ruleTransitionsSequence and the state. These data is received by the third algorithm
+Finally, we confirm if the stack is empty (it means that the automaton accepted the String) or if it is not (it means that the automaton rejected the String). So, if the state = 0, the automaton accepted the String, if the state = 1, the automaton rejected the String. All this algorithm retunrs the stackSequence, the ruleTransitionsSequence, the state and the string that proccesed. These data is received by the third algorithm.
 
-### Automata configuration tree algorithm
+### Third Algorithm: Automaton configuration tree algorithm
+
+This third algorithm is responsible for separate and organize the output of the second algorithm. And this is the final algorithm, this delivery the final output of the chain of algorithms
+
+```
+def printTree(results):
+    word = results[3]
+    tree = []
+    stack = []
+    rules = []
+    for i in range(len(results[0])):
+        if i == 0:
+            rules.append("Original")
+            stack.append(results[0][i])
+            tree.append(word)
+        else:
+            rules.append(results[1][i-1])
+            stack.append(results[0][i])
+            tree.append(word)
+        word = word[1:]
+    if results[2] == 0:
+        result = "The string belong to the language"
+    else:
+        result = "The string doesn't belong to the language"
+    return tree, stack, rules, result
+```
+
+This algorithm is very simple, as mentioned, it receives the output of the second algorithm, create the final variables (tree, stack and rules), and start appending each element to it's corresponding list. Finally, returns the final product.
 
 ### Extra Code: The API and the Graphic interface
 
+We wanted to go further, so we implement these three algorithms with an API and a graphic interface. It was a difficult road, but through a lot of research we were able to move forward with the implementation.
+
 #### The API
 
-Firts of all we are going to talk about the API. As we mencioned before, we used FastAPI.
+Firts of all we are going to talk about the API. As we mentioned before, we used FastAPI.
 
 ```
 from fastapi import FastAPI, HTTPException
@@ -259,11 +293,14 @@ def validate(data: StringInput):
     resultValidation=validationString(data.string)
     tree=printTree(resultValidation)
     return {
-        "message": f"{tree}",
+        "tree": tree[0],
+        "stack" : tree[1],
+        "rules": tree[2],
+        "result": tree[3],
     }
 ```
 
-Finally, we create a post method, that receives a json with a String. Then calls the validationString method from the second algorithm and passes the string mencioned previously. Then passes the result to the printTree method from the third algorithm, and finally returns the final result to the graphic interface.
+Finally, we create a post method, that receives a json with a String. Then calls the validationString method from the second algorithm and passes the string mentioned previously. Then passes the result to the printTree method from the third algorithm, and finally returns the final result to the graphic interface.
 
 #### The graphic interface
 
@@ -274,6 +311,7 @@ The graphic interface was made with Streamlit, a python library that help us wit
 import random
 import requests
 import streamlit as st
+import pandas as pd
 
 st.title("🔢 Strings Generator and Validator")
 
@@ -329,7 +367,7 @@ def generateStrings():
     st.rerun()
 ```
 
-We define a method to generate the Strings making a request to the API, store them in a list, and mix them. Note that we are storing them in the state variables mencioned before.
+We define a method to generate the Strings making a request to the API, store them in a list, and mix them. Note that we are storing them in the state variables mentioned before.
 
 ```
 def sendValidateString():
@@ -356,7 +394,7 @@ We define a method to send to the API a json with the String to validate and sto
 modo = st.radio("Select a mode:", ["Generate Strings", "Enter String"])
 ```
 
-Our aplication has two modes, generating strings with the first algorithm, or introducing the string yourself. With this input we change to one or another mode.
+Our application has two modes, generating strings with the first algorithm, or introducing the string yourself. With this input we change to one or another mode.
 
 
 ```
@@ -388,13 +426,26 @@ Wheter generate the strings or introduce the string yourself, in both cases the 
 ```
 st.info("Results of the validation:")
 if st.session_state.validation:
-    st.write(st.session_state.validation.json().get("message", "No menssage."))
+    data = st.session_state.validation.json()  # Get the data from the response
+    # Create a dataframe with the data
+    df = pd.DataFrame({
+        "Tree": data["tree"],
+        "Stack": data["stack"],
+        "Rules": data["rules"]
+    })
+
+    # Show the table
+    st.table(df)
+    if data["result"] == "The string belong to the language":
+        st.success(data["result"])
+    else:
+        st.error(data["result"])
 else:
     st.write("No datas to show.")
 
 ```
 
-At this space we will be watching the result of the derivation, and if the string was accepted or rejected.
+At this space we will be watching the result of the derivation as a table made with the library pandas, we will be waching a table with three columns, the string and it's transformations, the state of the stack and the rule applied step by step, and if the string was accepted or rejected.
 
 ```
 col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
@@ -435,7 +486,7 @@ if modo == "Generate Strings":
         sendValidateString()
 ```
 
-So, if the user chooses the "Generate Strings" mode, there will be appearing a button to generate the strings, calling the method generateStrings() mencioned before, requesting and showing the strings generated. Furthermore, it will be appearing a button to validate the strings, this "initialize" the validation, put the iterator en 0 and start the procces of validation, calling the method sendValidateString() mencioned before.
+So, if the user chooses the "Generate Strings" mode, there will be appearing a button to generate the strings, calling the method generateStrings() mentioned before, requesting and showing the strings generated. Furthermore, it will be appearing a button to validate the strings, this "initialize" the validation, put the iterator en 0 and start the procces of validation, calling the method sendValidateString() mentioned before.
 
 
 ```

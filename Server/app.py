@@ -33,5 +33,8 @@ def validate(data: StringInput):
     resultValidation=validationString(data.string)
     tree=printTree(resultValidation)
     return {
-        "message": f"{tree}",
+        "tree": tree[0],
+        "stack" : tree[1],
+        "rules": tree[2],
+        "result": tree[3],
     }
