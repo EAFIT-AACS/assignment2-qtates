@@ -1,4 +1,4 @@
-
+ 
 # Creation of Language with Context Free Grammar 📖
 
 In this assignment, you will see the step-by-step process of creating a context-free language, from its definition to building its grammar, generating strings, and designing an automaton to verify whether they belong to the language.
@@ -10,7 +10,7 @@ In this assignment, you will see the step-by-step process of creating a context-
 - [User's Manual](#user's-manual)
 - [Explanation of the context free grammar](#explanation-of-the-context-free-grammar)
 - [Explanation of the algorithm](#explanation-of-the-algorithm)
-    - [First algorithm: Creating the accepted and rejected Strings](#first-algorithm:-creating-the-accepted-and-rejected-Strings)
+    - [First algorithm: Creating the accepted and rejected Strings](#first-algorithm: -creating-the-accepted-and-rejected-Strings)
     - [Algorithm of the automaton](#algotihm-of-the-automaton)
     - [Automata configuration tree algorithm](#algotihm-of-creation-strings)
     - [API](#api)
@@ -66,6 +66,12 @@ In the text input, you can enter the string you want to verify. Enter it without
 
 
 ## Explanation of the context free grammar
+
+The proposed language consists of: A language that accepts strings with an even number of 'a's (minimum 2) and an odd number of 'b's. These strings result from the concatenation of an odd number of substrings, each formed by an even number of 'a's (minimum 2) followed by an odd number of 'b's.
+
+![L(M)](https://render.githubusercontent.com/render/math?math=L(M)%20%3D%20%5Cleft%5C%7B%20%5Cleft(a%5E%7B2n%7D%20b%5E%7B2m%2B1%7D%20%5Cright)%5E*%20%7C%20n%20%5Cgeq%201%2C%20m%20%5Cgeq%200%20%5Cright%5C}%20-%20%5C%7B%5Cepsilon%5C%7D)
+
+The context-free grammar (CFG) that defines the language is:
 
 ## Explanation of the algotithm
 
