@@ -1,11 +1,11 @@
-import CreateStrings
-import Automaton
-import PrintTree
+import Scripts.ALGORITHM_1_LFCO_2025_GV_LC_SM as ALGORITHM_1_LFCO_2025_GV_LC_SM
+import Scripts.ALGORITHM_2_LFCO_2025_GV_LC_SM as ALGORITHM_2_LFCO_2025_GV_LC_SM
+import Scripts.ALGORITHM_3_LFCO_2025_GV_LC_SM as ALGORITHM_3_LFCO_2025_GV_LC_SM
 
-correctStrings=CreateStrings.createCorrectStrings()
-worngStrings=CreateStrings.createWrongStrings()
+correctStrings=ALGORITHM_1_LFCO_2025_GV_LC_SM.createCorrectStrings()
+worngStrings=ALGORITHM_1_LFCO_2025_GV_LC_SM.createWrongStrings()
 print(correctStrings,worngStrings)
 
-results=Automaton.validationString(correctStrings,worngStrings,0)
+results=ALGORITHM_2_LFCO_2025_GV_LC_SM.validationString(correctStrings,worngStrings,0)
 
-print(PrintTree.printTree(results))
+print(ALGORITHM_3_LFCO_2025_GV_LC_SM.printTree(results))

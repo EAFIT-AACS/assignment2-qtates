@@ -1,7 +1,7 @@
 def validationString(word):
     
-    # Definition of automaton: Stack with its initial symbol, started state q, transitions).
-    stack = ["b"]
+    # Definition of automaton: Stack with its initial symbol, started state q, transitions.
+    stack = ["b"] #In every iteration get the initial symbol in the stack.
     q=word
     #Definition of transitions/rules using a dictionary.
     functiontransition = {("a","b"):["ab",1],("a","a"):["",2],("b",""):["b",3],("b","b"):["",4],("a",""):["abx",5],("a","x"):["ab",6],("b","x"):["bx",7]}
@@ -11,8 +11,6 @@ def validationString(word):
     ruleTransitionsSequence=[]
     state=0
 
-    #Analizy every string in vectorStrings.
-    stack = ["b"] #In every iteration get the initial symbol in the stack.
     for j in range(len(word)):
         letter=word[j] #Processed letter for letter.
             
@@ -22,7 +20,7 @@ def validationString(word):
         else:
             highStack= stack[0] #Otherwise take the first character in the stack.
             
-            #Search the corresponding transition/rule for the letter and hihgStack, and add the number's rule.
+        #Search the corresponding transition/rule for the letter and hihgStack, and add the number's rule.
         if (letter,highStack) in functiontransition:
             transition=functiontransition[letter,highStack][0]
             ruleTransitionsSequence.append(functiontransition[letter,highStack][1])
@@ -32,7 +30,7 @@ def validationString(word):
         print(letter,",",highStack,":",transition)
             
         #Delete the first character in the stack, and add the transition character to the character in the stack. When this process is finished add it stackSequence.
-        stack.pop(0) 
+        stack.pop(0)
         for k in range(len(transition)):
             stack.insert(k,transition[k])
         print(stack)
