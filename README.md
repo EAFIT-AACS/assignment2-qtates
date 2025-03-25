@@ -3,30 +3,30 @@
 
 In this assignment, you will see the step-by-step process of creating a context-free language, from its definition to building its grammar, generating strings, and designing an automaton to verify whether they belong to the language.
 
-## Contents
+## Contents 🤔
 - [Team](#team)
 - [Development environment](#development-environment)
 - [Instructions for running](#instructions-for-running)
-- [User's Manual](#user's-manual)
+- [User's Manual](#users-manual)
 - [Explanation of the context free grammar](#explanation-of-the-context-free-grammar)
 - [Explanation of the algorithm](#explanation-of-the-algorithm)
-    - [First algorithm: Creating the accepted and rejected Strings](#first-algorithm:-creating-the-accepted-and-rejected-Strings)
-    - [Algorithm of the automaton](#algorithm-of-the-automaton)
-    - [Automata configuration tree algorithm](#algorithm-of-creation-strings)
-    - [API](#api)
+    - [First algorithm: Creating the accepted and rejected Strings](#first-algorithm-creating-the-accepted-and-rejected-Strings)
+    - [Second Algorithm: The automaton](#second-algorithm-the-automaton)
+    - [Third Algorithm: Automaton configuration tree algorithm](#third-algorithm-automaton-configuration-tree-algorithm)
+    - [Extra Code: The API and the Graphic interface](#extra-code-the-api-and-the-graphic-interface)
 
-## Team
+## Team 💡🧠
 - Ginna Alejandra Valencia Macuace
 - Laura Andrea Castrillón Fajardo
 - Samuel Martínez Arteaga
 
-## Development environment
+## Development environment 💻🐍
 - **Operative System:** Windows 11
 - **Programming language:** Python 3.12
 - **Tools:** Visual Studio Code
 - **FrameWork:** Streamlit and FastAPI
 
-## Instructions for running
+## Instructions for running ▶️🏃‍♂️
 - 1. Install FastAPI. To do this, type the following command in the terminal:
 ```
 pip install fastapi uvicorn
@@ -35,7 +35,7 @@ pip install fastapi uvicorn
 ```
 pip install streamlit
 ```
-- 5. Install pandas. To do this, type the following command in the terminal:
+- 3. Install pandas. To do this, type the following command in the terminal:
 ```
 pip install pandas
 ```
@@ -48,7 +48,7 @@ uvicorn Server.app:app --reload
 streamlit run Server/interfaceCFG.py
 ```
 
-## User's Manual
+## User's Manual 📖👨
 
 After completing the previous steps, the following page should open in your browser.
 
@@ -74,15 +74,38 @@ In the text input, you can enter the string you want to verify. Enter it without
 - 6. To validate it, click the "Validate String" button. Below, you will see the vector being validated along with its corresponding response and configuration tree for the string.
 
 
-## Explanation of the context free grammar
+## Explanation of the context free grammar 📝 🆓
 
 The proposed language consists of: A language that accepts strings with an even number of 'a's (minimum 2) and an odd number of 'b's. These strings result from the concatenation of an odd number of substrings, each formed by an even number of 'a's (minimum 2) followed by an odd number of 'b's.
 
-![L(M)](https://render.githubusercontent.com/render/math?math=L(M)%20%3D%20%5Cleft%5C%7B%20%5Cleft(a%5E%7B2n%7D%20b%5E%7B2m%2B1%7D%20%5Cright)%5E*%20%7C%20n%20%5Cgeq%201%2C%20m%20%5Cgeq%200%20%5Cright%5C}%20-%20%5C%7B%5Cepsilon%5C%7D)
+<img src="https://latex.codecogs.com/svg.latex?\color{white}L(M)%20=%20\left\{%20\left(a^{2n}%20b^{2m+1}%20\right)^*%20\mid%20n%20\geq%201,%20m%20\geq%200%20\right\}%20-%20\{\epsilon\}" />
 
 The context-free grammar (CFG) that defines the language is:
 
-## Explanation of the algotithm
+$$G=(N,\Sigma,P,S)$$
+$$N={S,A,B,X}$$
+$$\Sigma={a,b}\\newline$$
+$$P= S \to  ABX\\newline$$
+$$A \to  aaA | aa\\newline$$
+$$B \to bbB | b$$
+
+And the stack automaton proposed is:
+
+$$N=(Q,\Sigma,\Gamma,\delta, S,F)$$
+$$Q={q}$$
+$$\Sigma={a,b}$$
+$$\Gamma ={a,b}$$
+$$S={q}$$
+$$F=\phi$$
+$$\delta=i.\  ((q,a,b)(q,ab))$$
+$$ii.\  ((q,a,a)(q,\epsilon ))$$
+$$iii. \ ((q,b,\epsilon )(q,b))$$
+$$iv. \ ((q,b,b)(q,\epsilon ))$$
+$$v. \ ((q,a,\epsilon )(q,abx))$$
+$$vi. \ ((q,a,x)(q,ab))$$
+$$vii. \ ((q,b,x)(q,bx))$$
+
+## Explanation of the algorithm 🤖💭
 
 ### First algorithm: Creating the accepted and rejected Strings
 
