@@ -1,0 +1,11 @@
+import Scripts.ALGORITHM_1_LFCO_2025_GV_LC_SM as ALGORITHM_1_LFCO_2025_GV_LC_SM
+import Scripts.ALGORITHM_2_LFCO_2025_GV_LC_SM as ALGORITHM_2_LFCO_2025_GV_LC_SM
+import Scripts.ALGORITHM_3_LFCO_2025_GV_LC_SM as ALGORITHM_3_LFCO_2025_GV_LC_SM
+
+correctStrings=ALGORITHM_1_LFCO_2025_GV_LC_SM.createCorrectStrings()
+worngStrings=ALGORITHM_1_LFCO_2025_GV_LC_SM.createWrongStrings()
+print(correctStrings,worngStrings)
+
+results=ALGORITHM_2_LFCO_2025_GV_LC_SM.validationString(correctStrings,worngStrings,0)
+
+print(ALGORITHM_3_LFCO_2025_GV_LC_SM.printTree(results))
